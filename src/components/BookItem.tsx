@@ -33,13 +33,14 @@ export default function BookItem({
       </div>
       <div style={styles.buttonGroup}>
         <button
+          title={book.read ? "Mark as unread" : "Mark as read"}
           style={{
             ...styles.readButton,
-            color: book.read ? "#4caf50" : "#f44336",
+            color: book.read ? "#f44336" : "#4caf50",
           }}
           onClick={toggleRead}
         >
-          {book.read ? "✓" : "✗"}
+          {book.read ? "✗" : "✓"}
         </button>
         <button style={styles.deleteButton} onClick={onDelete}>
           Delete
