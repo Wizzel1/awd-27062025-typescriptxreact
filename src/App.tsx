@@ -1,35 +1,56 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import "./App.css";
+import BookItem from "./components/BookItem";
+import NewBookForm from "./components/NewBookForm";
+import { initialBooks, type Book } from "./models/book";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [books, setBooks] = useState<Book[]>(initialBooks);
+
+  const handleAddBook = (title: string, author: string) => {
+    setBooks((current) => {
+      return [
+        ...current,
+        { id: current.length + 1, title, author, read: false },
+      ];
+    });
+  };
+
+  const handleDeleteBook = (id: number) => {
+    setBooks((current) => {
+      return current.filter((b) => b.id !== id);
+    });
+  };
+
+  const handleReadBookToggle = (id: number) => {
+    setBooks((current) => {
+      return current.map((b) => (b.id === id ? { ...b, read: !b.read } : b));
+    });
+  };
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <h1>My Books</h1>
+      <NewBookForm onAddBook={handleAddBook} />
+      <ul style={styles.ul}>
+        {books.map((book) => (
+          <BookItem
+            key={book.id}
+            book={book}
+            onDelete={() => handleDeleteBook(book.id)}
+            toggleRead={() => handleReadBookToggle(book.id)}
+          />
+        ))}
+      </ul>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
+
+const styles = {
+  ul: {
+    listStyle: "none",
+    padding: 0,
+  },
+};
