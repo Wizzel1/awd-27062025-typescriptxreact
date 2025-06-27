@@ -7,12 +7,17 @@ interface NewBookFormProps {
 export default function NewBookForm({ onAddBook }: NewBookFormProps) {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
-
+  const [showError, setShowError] = useState(false);
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (title.trim() === "" || author.trim() === "") {
+      setShowError(true);
+      return;
+    }
     onAddBook(title, author);
     setTitle("");
     setAuthor("");
+    setShowError(false);
   };
 
   return (
@@ -26,7 +31,7 @@ export default function NewBookForm({ onAddBook }: NewBookFormProps) {
           style={styles.input}
         />
         <label style={styles.label}>
-          {title.trim() === "" ? "Please enter title" : ""}
+          {showError && title.trim() === "" ? "Please enter title" : ""}
         </label>
       </div>
 
@@ -40,7 +45,7 @@ export default function NewBookForm({ onAddBook }: NewBookFormProps) {
         />
 
         <label style={styles.label}>
-          {author.trim() === "" ? "Please enter author" : ""}
+          {showError && author.trim() === "" ? "Please enter author" : ""}
         </label>
       </div>
 
