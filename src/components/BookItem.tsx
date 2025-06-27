@@ -14,8 +14,22 @@ export default function BookItem({
   return (
     <li style={styles.li}>
       <div style={styles.bookInfo}>
-        <span style={styles.title}>{book.title}</span>
-        <span style={styles.author}>{book.author}</span>
+        <span
+          style={{
+            ...styles.title,
+            textDecoration: book.read ? "line-through" : "none",
+          }}
+        >
+          {book.title}
+        </span>
+        <span
+          style={{
+            ...styles.author,
+            textDecoration: book.read ? "line-through" : "none",
+          }}
+        >
+          {book.author}
+        </span>
       </div>
       <div style={styles.buttonGroup}>
         <button
